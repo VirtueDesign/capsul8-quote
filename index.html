@@ -380,7 +380,7 @@ footer { background: var(--charcoal); padding: 30px 0; }
             <div class="swatch-name">${escapeHtml(m.sub)}</div>
             <div class="swatch-desc">${escapeHtml(m.desc)}</div>
             ${m.link ? `<a href="${m.link}" target="_blank" rel="noopener" class="film-link">View on 3M's site →</a>` : ''}
-            <div class="swatch-tier"><span>Material Rate · Per Metre</span><span class="amt" id="optrate-${ok}">£0.00</span></div>
+            <div class="swatch-tier"><span>Supply &amp; Install · Per Metre</span><span class="amt" id="optrate-${ok}">£0.00</span></div>
           </div>
 
           <div class="film-calc">
@@ -410,7 +410,9 @@ footer { background: var(--charcoal); padding: 30px 0; }
       const ok = optionKey(m.key, m.app);
       const rawRate = parseFloat(state.settings.materials[m.key][m.app].priceLM) || 0;
       const markupPct = parseFloat(state.settings.materialMarkupPct) || 0;
-      const rounded = Math.ceil(rawRate * (1 + markupPct/100));
+      const materialWithMarkup = rawRate * (1 + markupPct/100);
+      const standardInstall = (parseFloat(state.settings.hoursBase)||0) * (parseFloat(state.settings.hourlyRate)||0);
+      const rounded = Math.ceil(materialWithMarkup + standardInstall);
       const el = document.getElementById('optrate-' + ok);
       if(el) el.textContent = fmtMoney(rounded);
     });
